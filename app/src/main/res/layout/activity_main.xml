@@ -11,20 +11,42 @@
         android:layout_height="495dp"
         android:orientation="vertical"
         tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
+        tools:layout_editor_absoluteX="8dp"
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/server"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="查询中控的ip地址及监听端口..."
+            android:textSize="18sp"
+            android:padding="3dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="显示设备位置信息："
+            android:padding="3dp"
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tip"
+            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="18sp" />
+            android:padding="5dp"
+            android:textColor="@color/red"
+            android:text="注意：列表展开后位置信息不会更新，重新展开即可获取最新位置！"
+            android:textSize="12sp" />
+
+        <ExpandableListView
+            android:id="@+id/exlist_lol"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:childDivider="#E02D2F"/>
+
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

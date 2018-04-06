@@ -1,10 +1,12 @@
 package com.nuaakx.istest2;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,16 @@ public class MainActivity extends AppCompatActivity {
     private String ip;          //中控ip
     private int port;           //中控监听端口
     private tcpclient tcp;      //与中控tcp连接
+
+    //列表
+    private ArrayList<Group> gData = null;
+    private ArrayList<ArrayList<Item>> iData = null;
+    private ArrayList<Item> lData = null;
+    private Context mContext;
+    private ExpandableListView exlist_lol;
+    private MyBaseExpandableListAdapter myAdapter = null;
+
+
     final Handler mainHandler = new Handler()
     {
         @Override
@@ -76,8 +88,41 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case 0x3: {
-                    Toast.makeText(MainActivity.this, msg.getData().getString("inf")
-                            , Toast.LENGTH_LONG).show();
+                    String json = msg.getData().getString("inf");
+                    try{
+                        JSONObject jsonObj = new JSONObject(json);
+                        if(jsonObj.has("ip")){
+                            String temip = jsonObj.optString("ip");
+                            int temport = jsonObj.optInt("port");
+                            //查找已有列表中是否存在该ip和端口
+                            boolean t = false;
+                            int i = 0;
+                            for(i = 0;i<gData.size();i++){
+                                if(gData.get(i).getgName().compareTo(temip+":"+temport) == 0)
+                                    t = true;
+                            }
+
+                            int x = jsonObj.optInt("x");
+                            int y = jsonObj.optInt("y");
+                            if(t){
+                                i--;
+                                iData.get(i).get(0).setiName("x:"+x);
+                                iData.get(i).get(1).setiName("y:"+y);
+                            }else{
+                                gData.add(new Group(temip+":"+temport));
+                                lData = new ArrayList<Item>();
+                                lData.add(new Item("x:"+x));
+                                lData.add(new Item("y:"+y));
+                                iData.add(lData);
+//                                myAdapter = new MyBaseExpandableListAdapter(gData,iData,mContext);
+                                exlist_lol.setAdapter(myAdapter);
+                            }
+
+                        }
+                    }catch (JSONException e){
+                        Toast.makeText(MainActivity.this, e.getMessage()
+                                , Toast.LENGTH_LONG).show();
+                    }
                     break;
                 }
                 case 0x4: {
@@ -96,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +150,17 @@ public class MainActivity extends AppCompatActivity {
         udp = new udpserver(mainHandler);
         udp.start();
         tcp = new tcpclient(mainHandler);
+
+        mContext = MainActivity.this;
+        exlist_lol = (ExpandableListView) findViewById(R.id.exlist_lol);
+
+
+        //数据准备
+        gData = new ArrayList<Group>();
+        iData = new ArrayList<ArrayList<Item>>();
+        myAdapter = new MyBaseExpandableListAdapter(gData,iData,mContext);
+        exlist_lol.setAdapter(myAdapter);
+
     }
 
     //获取中控tcp监听端口
