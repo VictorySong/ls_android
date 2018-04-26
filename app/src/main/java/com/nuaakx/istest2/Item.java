@@ -8,30 +8,27 @@ import android.content.ClipData;
 
 public class Item {
 
-    private int iId;
     private String iName;
+    private String iName1;
 
     public Item() {
     }
 
-    public Item(String iName){
+    public Item(String iName,String iName1){
         this.iName = iName;
-    }
-    public Item(int iId, String iName) {
-        this.iId = iId;
-        this.iName = iName;
+        this.iName1 = iName1;
     }
 
-    public int getiId() {
-        return iId;
+    public String getiName1() {
+        return iName1;
     }
 
     public String getiName() {
         return iName;
     }
 
-    public void setiId(int iId) {
-        this.iId = iId;
+    public void setiName1(String tem) {
+        this.iName1 = tem;
     }
 
     public void setiName(String iName) {

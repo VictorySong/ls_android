@@ -89,14 +89,14 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.item_exlist_item, parent, false);
             itemHolder = new ViewHolderItem();
-            itemHolder.img_icon = (ImageView) convertView.findViewById(R.id.img_icon);
             itemHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+            itemHolder.tv1_name = (TextView) convertView.findViewById(R.id.tv1_name);
             convertView.setTag(itemHolder);
         }else{
             itemHolder = (ViewHolderItem) convertView.getTag();
         }
-        itemHolder.img_icon.setImageResource(iData.get(groupPosition).get(childPosition).getiId());
         itemHolder.tv_name.setText(iData.get(groupPosition).get(childPosition).getiName());
+        itemHolder.tv1_name.setText(iData.get(groupPosition).get(childPosition).getiName1());
         return convertView;
     }
 
@@ -112,8 +112,8 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     private static class ViewHolderItem{
-        private ImageView img_icon;
         private TextView tv_name;
+        private TextView tv1_name;
     }
 
 }

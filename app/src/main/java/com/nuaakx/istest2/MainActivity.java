@@ -92,30 +92,33 @@ public class MainActivity extends AppCompatActivity {
                     try{
                         JSONObject jsonObj = new JSONObject(json);
                         if(jsonObj.has("ip")){
+                            String id = jsonObj.optString("id");
                             String temip = jsonObj.optString("ip");
                             int temport = jsonObj.optInt("port");
                             //查找已有列表中是否存在该ip和端口
                             boolean t = false;
                             int i = 0;
                             for(i = 0;i<gData.size();i++){
-                                if(gData.get(i).getgName().compareTo(temip+":"+temport) == 0)
+                                if(gData.get(i).getgName().compareTo(id) == 0) {
                                     t = true;
+                                    break;
+                                }
                             }
 
                             int x = jsonObj.optInt("x");
                             int y = jsonObj.optInt("y");
                             if(t){
-                                i--;
+
                                 iData.get(i).get(0).setiName("x:"+x);
-                                iData.get(i).get(1).setiName("y:"+y);
+                                iData.get(i).get(0).setiName1("y:"+y);
+                                myAdapter.notifyDataSetChanged();
                             }else{
-                                gData.add(new Group(temip+":"+temport));
+                                gData.add(new Group(id));
                                 lData = new ArrayList<Item>();
-                                lData.add(new Item("x:"+x));
-                                lData.add(new Item("y:"+y));
+                                lData.add(new Item("x:"+x,"y:"+y));
                                 iData.add(lData);
-//                                myAdapter = new MyBaseExpandableListAdapter(gData,iData,mContext);
-                                exlist_lol.setAdapter(myAdapter);
+                                myAdapter.notifyDataSetChanged();
+//                                exlist_lol.setAdapter(myAdapter);
                             }
 
                         }
@@ -221,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 Message msg = new Message();
                 msg.what = 0x2;
                 Bundle tem = new Bundle();
-                tem.putString("inf","出错");
+                tem.putString("inf",e.getMessage());
                 msg.setData(tem);
                 h.sendMessage(msg);
             }

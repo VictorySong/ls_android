@@ -32,20 +32,10 @@
             android:padding="3dp"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textColor="@color/red"
-            android:text="注意：列表展开后位置信息不会更新，重新展开即可获取最新位置！"
-            android:textSize="12sp" />
-
         <ExpandableListView
             android:id="@+id/exlist_lol"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:childDivider="#E02D2F"/>
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
