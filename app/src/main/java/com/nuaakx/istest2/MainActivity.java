@@ -1,12 +1,18 @@
 package com.nuaakx.istest2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -118,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
                                 lData.add(new Item("x:"+x,"y:"+y));
                                 iData.add(lData);
                                 myAdapter.notifyDataSetChanged();
-//                                exlist_lol.setAdapter(myAdapter);
                             }
 
                         }
@@ -133,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                             , Toast.LENGTH_LONG).show();
                     TextView tem = (TextView) findViewById(R.id.server);
                     tem.setText("查询中控的ip地址及监听端口...");
+
 
                     udp = new udpserver(mainHandler);   //重新实例化
                     tcp = new tcpclient(mainHandler);
@@ -164,6 +170,39 @@ public class MainActivity extends AppCompatActivity {
         myAdapter = new MyBaseExpandableListAdapter(gData,iData,mContext);
         exlist_lol.setAdapter(myAdapter);
 
+        ActivityCollector.addActivity(this);            //加入到活动activity 管理
+        LocMesHandleCo.addhandle(mainHandler);
+
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
+        LocMesHandleCo.removehandle(mainHandler);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.mainmenu,menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_listview) {
+            startActivity(new Intent(this, locmap.class));
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //获取中控tcp监听端口
@@ -176,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             try{
+
                 udpget();
             }catch (IOException e){
                 Message msg = new Message();
@@ -265,7 +305,8 @@ public class MainActivity extends AppCompatActivity {
                 Bundle tem1 = new Bundle();
                 tem1.putString("inf", sb);
                 msg1.setData(tem1);
-                h.sendMessage(msg1);
+//                h.sendMessage(msg1);
+                LocMesHandleCo.sendmes(msg1);
             }
             //发送中控断开信号
             h.sendEmptyMessage(0x4);

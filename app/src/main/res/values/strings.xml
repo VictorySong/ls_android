@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Istest2</string>
+    <string name="app_name">微小卫星监测</string>
+    <string name="title_activity_locmap">卫星位置图</string>
 </resources>
