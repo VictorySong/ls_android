@@ -14,29 +14,10 @@
         tools:layout_editor_absoluteX="8dp"
         android:weightSum="1">
 
-        <TextView
-            android:id="@+id/server"
+        <ListView
+            android:id="@+id/ss_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="查询中控的ip地址及监听端口..."
-            android:textSize="18sp"
-            android:padding="3dp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="0dp" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="显示设备位置信息："
-            android:padding="3dp"
-            android:textSize="18sp" />
-
-        <ExpandableListView
-            android:id="@+id/exlist_lol"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:indicatorLeft="5dp"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

@@ -22,6 +22,11 @@
             android:name=".locmap"
             android:label="@string/title_activity_locmap"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <service android:name=".SocketService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.nuaakx.istest2.SocketService"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
