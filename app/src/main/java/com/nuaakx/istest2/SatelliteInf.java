@@ -9,10 +9,16 @@ public class SatelliteInf {
     private float x;
     private float y;
     private lsmap Lsmap=null;
-    public SatelliteInf(String t_id,float t_x,float t_y){
+    private int r;
+    private int g;
+    private int b;
+    public SatelliteInf(String t_id,float t_x,float t_y,int t_r,int t_g,int t_b){
         this.id = t_id;
         this.x  = t_x;
         this.y  = t_y;
+        r = t_r;
+        g = t_g;
+        b = t_b;
     }
 
     public String getid(){
@@ -25,6 +31,18 @@ public class SatelliteInf {
 
     public float gety(){
         return y;
+    }
+
+    public int getr(){
+        return r;
+    }
+
+    public int getg() {
+        return g;
+    }
+
+    public int getb(){
+        return b;
     }
 
     public void setid(String t_id){

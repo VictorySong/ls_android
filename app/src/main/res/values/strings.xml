@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">微小卫星监测</string>
     <string name="title_activity_locmap">卫星位置图</string>
+    <string name="title_activity_main">卫星检测中...</string>
 </resources>

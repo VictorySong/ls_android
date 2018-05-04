@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,10 @@ public class locmap extends AppCompatActivity {
     private Context mcontext;
     private FrameLayout fram;
     public SocketService.MyBinder binder;
+    int WindowWidth ;
+    int WindowHeight;
+    float scale;
+    int Width = 200;
     private SInfChangeBcReceiver localbcReceiver;
     private LocalBroadcastManager localBroadcastManager;
     private IntentFilter intentFilter;
@@ -49,13 +54,18 @@ public class locmap extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             System.out.println("------Service Connected-------");
             binder = (SocketService.MyBinder) service;
-            LinkedList<SatelliteInf> t_mdata = binder.get_mData();
-            for(int i = 0;i<t_mdata.size(); i++) {
-                t_mdata.get(i).setLsmap(new lsmap(mcontext));
-                map = t_mdata.get(i).getLsmap();
-                map.bitmapX = 2 * t_mdata.get(i).getx();
-                map.bitmapY = 2 * t_mdata.get(i).gety();
-                fram.addView(map);
+            if(id.compareTo("ALL") == 0) {
+                LinkedList<SatelliteInf> t_mdata = binder.get_mData();
+                for (int i = 0; i < t_mdata.size(); i++) {
+                    t_mdata.get(i).setLsmap(new lsmap(mcontext));
+                    map = t_mdata.get(i).getLsmap();
+                    map.bitmapX = scale * t_mdata.get(i).getx();
+                    map.bitmapY = scale * t_mdata.get(i).gety();
+                    map.rr = t_mdata.get(i).getr();
+                    map.gg = t_mdata.get(i).getg();
+                    map.bb = t_mdata.get(i).getb();
+                    fram.addView(map);
+                }
             }
         }
     };
@@ -65,6 +75,11 @@ public class locmap extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locmap);
         mcontext = this;
+        WindowManager wm = (WindowManager) this
+                .getSystemService(Context.WINDOW_SERVICE);
+        WindowWidth = wm.getDefaultDisplay().getWidth();
+        WindowHeight = wm.getDefaultDisplay().getHeight();
+        scale = WindowWidth/Width;
         //获取启动数据，是单个还是所有
         Intent tem = getIntent();
         Bundle bd = tem.getExtras();
@@ -84,10 +99,16 @@ public class locmap extends AppCompatActivity {
 
         fram = (FrameLayout)findViewById(R.id.map_all);
         if(id.compareTo("ALL")!=0){
+            setTitle(id+"位置图");
             map = new lsmap(mcontext);
-            map.bitmapX = bd.getFloat("x");
-            map.bitmapY = bd.getFloat("y");
+            map.bitmapX = bd.getFloat("x")*scale;
+            map.bitmapY = bd.getFloat("y")*scale;
+            map.rr = bd.getInt("R");
+            map.gg = bd.getInt("G");
+            map.bb = bd.getInt("B");
             fram.addView(map);
+        }else{
+            setTitle("所有卫星位置图");
         }
         //初始化广播接收者，设置过滤器
         localBroadcastManager = LocalBroadcastManager.getInstance(this.getBaseContext());
@@ -124,8 +145,8 @@ public class locmap extends AppCompatActivity {
             JSONObject tem = binder.get_tcpjson();
             if(id.compareTo("ALL") != 0) {
                 if (tem.optString("id").compareTo(id) == 0) {
-                    map.bitmapX = (float) 2 * tem.optInt("x");
-                    map.bitmapY = (float) 2 * tem.optInt("y");
+                    map.bitmapX = (float) scale * tem.optInt("x");
+                    map.bitmapY = (float) scale * tem.optInt("y");
                     map.invalidate();
                 }
             }else {
@@ -136,8 +157,8 @@ public class locmap extends AppCompatActivity {
                         fram.addView(t_mdata.get(i).getLsmap());
                     }
                     map = t_mdata.get(i).getLsmap();
-                    map.bitmapX =  2 * t_mdata.get(i).getx();
-                    map.bitmapY = 2 * t_mdata.get(i).gety();
+                    map.bitmapX =  scale * t_mdata.get(i).getx();
+                    map.bitmapY = scale * t_mdata.get(i).gety();
                     map.invalidate();
                 }
             }

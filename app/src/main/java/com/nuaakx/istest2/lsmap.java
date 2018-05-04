@@ -13,6 +13,10 @@ public class lsmap extends View {
     //定义相关变量,依次是妹子显示位置的X,Y坐标
     public float bitmapX;
     public float bitmapY;
+    public int rr = 255;
+    public int gg = 33;
+    public int bb = 33;
+    public int aa = 255;
     public lsmap(Context context) {
         super(context);
         //设置妹子的起始坐标
@@ -26,9 +30,9 @@ public class lsmap extends View {
         super.onDraw(canvas);
         //创建,并且实例化Paint的对象
         Paint paint = new Paint();
-
+        paint.setARGB(aa,rr,gg,bb);
         //绘制圆
-        canvas.drawCircle(bitmapX,bitmapY,10,paint);
+        canvas.drawCircle(bitmapX,bitmapY,20,paint);
         //判断图片是否回收,木有回收的话强制收回图片
 
     }

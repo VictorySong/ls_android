@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         mContext = MainActivity.this;
         ActivityCollector.addActivity(this);            //加入到活动activity 管理
-
+        this.setTitle("卫星监测中..");
         s_list = (ListView)findViewById(R.id.ss_list);
 
         localBroadcastManager = LocalBroadcastManager.getInstance(this.getBaseContext());
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_listview) {
+        if (id == R.id.ls_map_view) {
             Intent tem = new Intent(this,locmap.class);
             Bundle bd = new Bundle();
             bd.putString("id","ALL");

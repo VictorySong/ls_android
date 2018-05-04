@@ -4,6 +4,7 @@ package com.nuaakx.istest2;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.Notification.Builder;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -90,6 +91,7 @@ public class SocketService extends IntentService {
 
         localBroadcastManager = LocalBroadcastManager.getInstance(this.getBaseContext());
         mData = new LinkedList<SatelliteInf>();
+
         new Thread(){
             public void run(){
                 while(!stop) {
@@ -146,7 +148,10 @@ public class SocketService extends IntentService {
                                                 mData.get(i).setx((float) x);
                                                 mData.get(i).sety((float) y);
                                             }else{
-                                                mData.add(new SatelliteInf(id,(float) x,(float) y));
+                                                int r = tcpjson.optInt("R");
+                                                int g = tcpjson.optInt("G");
+                                                int b = tcpjson.optInt("B");
+                                                mData.add(new SatelliteInf(id,(float) x,(float) y,r,g,b));
                                             }
                                         }
                                         Log.i(TAG,"收到服务端tcp信息");
