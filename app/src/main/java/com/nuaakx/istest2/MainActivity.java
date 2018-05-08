@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -73,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
         intentFilter = new IntentFilter();
         intentFilter.addAction("com.nuaakx.istest2.SatelliteInfChange");
         localBroadcastManager.registerReceiver(localbcReceiver,intentFilter);
+        //初始化连接状态变化广播
+        SConnectStatusBcReceiver tem = new SConnectStatusBcReceiver();
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("com.nuaakx.istest2.SatelliteConnectStatus");
+        localBroadcastManager.registerReceiver(tem,intentFilter);
 
         final Intent it = new Intent();
         it.setAction("com.nuaakx.istest2.SocketService");
@@ -118,6 +124,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(final Context context, Intent intent) {
             slistAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class SConnectStatusBcReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(final Context context, Intent intent) {
+
         }
     }
 

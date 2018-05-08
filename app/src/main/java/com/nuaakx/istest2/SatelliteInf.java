@@ -12,13 +12,25 @@ public class SatelliteInf {
     private int r;
     private int g;
     private int b;
-    public SatelliteInf(String t_id,float t_x,float t_y,int t_r,int t_g,int t_b){
+    private int status;
+    public SatelliteInf(String t_id,float t_x,float t_y,int t_r,int t_g,int t_b,int t_status){
         this.id = t_id;
         this.x  = t_x;
         this.y  = t_y;
         r = t_r;
         g = t_g;
         b = t_b;
+        status = t_status;
+    }
+
+    public SatelliteInf(SatelliteInf tem){
+        this.id = tem.getid();
+        this.x = tem.getx();
+        this.y = tem.gety();
+        this.Lsmap = tem.getLsmap();
+        this.r = tem.getr();
+        this.g = tem.getg();
+        this.b = tem.getb();
     }
 
     public String getid(){
@@ -61,5 +73,9 @@ public class SatelliteInf {
     }
     public void setLsmap(lsmap t_Lsmap){
         Lsmap = t_Lsmap;
+    }
+    public int getStatus(){return status;}
+    public void setStatus(int t_status){
+        status = t_status;
     }
 }

@@ -59,6 +59,11 @@ public class SatelliteInfAdapter extends BaseAdapter {
         int color= Color.rgb(t_s.getr(),t_s.getg() ,t_s.getb());
         String tem = "<font color='"+color+"'><big><b>"+t_s.getid()+"</b></big></font><br>"+"x:"+t_s.getx()+"&nbsp;&nbsp;&nbsp;"+"y:"+t_s.gety();
         ss.setText(Html.fromHtml(tem));
+        if(t_s.getStatus() == 0){
+            ss.setBackgroundColor(Color.GRAY);
+        }else{
+            ss.setBackgroundColor(Color.WHITE);
+        }
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -91,7 +91,6 @@ public class SocketService extends IntentService {
 
         localBroadcastManager = LocalBroadcastManager.getInstance(this.getBaseContext());
         mData = new LinkedList<SatelliteInf>();
-
         new Thread(){
             public void run(){
                 while(!stop) {
@@ -151,8 +150,37 @@ public class SocketService extends IntentService {
                                                 int r = tcpjson.optInt("R");
                                                 int g = tcpjson.optInt("G");
                                                 int b = tcpjson.optInt("B");
-                                                mData.add(new SatelliteInf(id,(float) x,(float) y,r,g,b));
+                                                mData.add(0,new SatelliteInf(id,(float) x,(float) y,r,g,b,1));
                                             }
+                                        }
+
+                                        if(tcpjson.has("status")){
+                                            int status = tcpjson.optInt("status");
+                                            String id = tcpjson.optString("id");
+                                            if(status==0){
+                                                int i;
+                                                for(i = 0;i<mData.size();i++){
+                                                    if(mData.get(i).getid().compareTo(id) == 0) {
+                                                        SatelliteInf tem = new SatelliteInf(mData.get(i));
+                                                        tem.setStatus(0);
+                                                        mData.remove(i);
+                                                        mData.add(tem);
+                                                        break;
+                                                    }
+                                                }
+                                            }else{
+                                                int i;
+                                                for(i = 0;i<mData.size();i++){
+                                                    if(mData.get(i).getid().compareTo(id) == 0) {
+                                                        SatelliteInf tem = new SatelliteInf(mData.get(i));
+                                                        tem.setStatus(1);
+                                                        mData.remove(i);
+                                                        mData.add(0,tem);
+                                                        break;
+                                                    }
+                                                }
+                                            }
+//                                            localBroadcastManager.sendBroadcast(new Intent("com.nuaakx.istest2.SatelliteConnectStatus"));
                                         }
                                         Log.i(TAG,"收到服务端tcp信息");
                                         localBroadcastManager.sendBroadcast(new Intent("com.nuaakx.istest2.SatelliteInfChange"));
