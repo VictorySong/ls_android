@@ -194,9 +194,20 @@ public class SocketService extends IntentService {
                             }
                             socket.close();
                         } catch (JSONException e) {
+
                             Log.i(TAG,e.getMessage());
                         }
                     } catch (IOException e) {
+                        try {
+                            this.sleep(3000);
+                        }catch (InterruptedException e1){
+
+                        }
+                        int i;
+                        for(i = 0;i<mData.size();i++){
+                            mData.get(i).setStatus(0);
+                        }
+                        localBroadcastManager.sendBroadcast(new Intent("com.nuaakx.istest2.SatelliteInfChange"));
                         Log.i(TAG,e.getMessage());
                     }
                 }
